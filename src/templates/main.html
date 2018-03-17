@@ -1,0 +1,290 @@
+<style type="text/css">
+	#loading-bar-spinner {
+		top: 140px !important;
+		left: 253px !important;
+	}
+	
+	#page-wrapper:not(.open) #loading-bar-spinner {
+		left: 87px !important;
+		z-index: 15;
+	}
+	
+	#page-wrapper:not(.open) #loading-bar .bar {
+		left: 83px !important;
+	}
+	
+	#loading-bar .bar {
+		top: 135px !important;
+		left: 250px !important;
+		z-index: 299;
+	}
+</style>
+<!--Screen Limiter-->
+<!--<div id="screen-wrapper">
+	<div ng-controller="scrLimitor">
+		</div>
+</div>-->
+<!--Activate Traffic Button-->
+<script type="text/ng-template" id="traffic-btn.html">
+	<div class="traffic-container" ng-controller="trafficBtn">
+		<div class="traffic-btn" role="button" title="Show traffic" ng-click="reverseTraffic()">
+			Traffic
+		</div>
+	</div>
+</script>
+<!--Load infowindow on map-->
+<script type="text/ng-template" id="map-panel.html">
+	<!--<div ng-show="markerClicked == true">-->
+		<div id='infowindow' ng-controller="map-to-vehicle">
+			<table id='infowindow-table' width="330px">
+				<tr class="border">
+					<th>
+						<i class="fa fa-truck" style="color:black" aria-hidden="true"></i>
+					</th>
+					<th>
+						{{vehicle.id}}
+					</th>
+				</tr>
+				<tr class="border">
+					<td>
+						<i class="fa fa-clock-o" style="color:black" aria-hidden="true"></i>
+					</td>
+					<td>
+						{{vehicle.time | date:"dd/MM/yyyy 'at' hh:mm:ssa"}}
+					</td>
+				</tr>
+				<tr class="border">
+					<td>
+						<i class="fa fa-location-arrow" style="color:black" aria-hidden="true"></i>
+					</td>
+					<td>
+						{{vehicle.address}}
+					</td>
+				</tr>
+				<tr class="border">
+					<td>
+						<i class="fa fa-tachometer" style="color:black" aria-hidden="true"></i>
+					</td>
+					<td>
+						{{vehicle.speed}}
+					</td>
+				</tr>
+			</table>
+			<div class="detail-button row" style="width: 100%">
+				<div class="btns-link"><button class="btn" ng-click="viewVehicle(vehicle.sim)">
+      <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>View
+    </button></div>
+				<div class="btns-link"><button class="btn" ng-click="trackDetail(vehicle.sim)">
+      <i class="fa fa-car fa-fw" aria-hidden="true"></i>Track
+    </button></div>
+				<div class="btns-link"><button class="btn" ng-click="playRecord(vehicle.sim)">
+      <i class="fa fa-file-video-o fa-fw" aria-hidden="true"></i> Record
+    </button></div>
+			</div>
+		</div>
+	<!--</div>-->
+</script>
+<!-- Header Bar -->
+<div class="row header" ng-controller="headerCtrl">
+	<div class="header-wrapper col-lg-12">
+		<style type="text/css">
+
+		</style>
+		<div id="logo" class="header-logo">
+		</div>
+		<div class="user pull-right noselect" ng-controller="indexCtroller as vm">
+			<div class="item dropdown" uib-dropdown>
+				<a href="#" class="dropdown-toggle" uib-dropdown-toggle>
+					<span class="fa fa-bars"></span>
+				</a>
+				<ul class="settings dropdown-menu dropdown-menu-right">
+					<script type="text/ng-template" id="myModalContent.html">
+						<div class="modal-header">
+							<strong class="modal-title" id="modal-title">Notifications</strong>
+							<a href ng-click="clearAll()" style="float:left">Clear All Notifications</a>
+							<a href ng-click="close()">Close</a>
+							<br /><br /><span>Right click on alarms to see options</span>
+						</div>
+						<div class="modal-body" id="modal-body" modal-context-menu>
+							<div class="msg-list" ng-scrollbars ng-scrollbars-config="vm.config">
+								<a href class="notification-item fade clearfix" ng-repeat="msg in vm.notificates" data-id="{{msg.armTime}}" ng-class="isAlarm(msg.armType)">
+									<div class="msg-content"><strong>{{msg.devName + "(" +  msg.devIdno + ") " + msg.type + getVerb(msg.armType) + msg.info}}</strong></div>
+									<div class="msg-area">{{timePass(msg.armTime)}}</div>
+									<span ng-click="removeNot(msg.armTime, $index)">x</span>
+								</a>
+							</div>
+						</div>
+					</script>
+					<li class="username dropdown-header">
+						{{vm.username}}
+					</li>
+					<li class="divider"></li>
+					<!-- <li class="link">
+						<a href ng-click="vm.open()">
+							Notifications
+							<span ng-show="vm.isNotify()">{{currentAlerts.length}}<div class="notification-ring"></div></span>
+						</a>
+					</li> -->
+					<li class="link">
+						<a href ng-click="vm.grouping()">
+							Vehicle Group
+						</a>
+					</li>
+					<li class="link">
+						<a href="/#!/account/">
+							Account Setting
+						</a>
+					</li>
+					<li class="divider"></li>
+					<li class="link">
+						<a href="javascript:void(0)" ng-click="vm.logout()">Sign Out</a>
+					</li>
+				</ul>
+			</div>
+			<div class="notification item dropdown" uib-dropdown>
+				<a href ng-click="vm.open()">
+					<i class="fa fa-bell"><span ng-show="vm.isNotify()">{{currentAlerts.length}}<div class="notification-ring"></div></span></i>
+				</a>
+			</div>
+		</div>
+		<ul class="header-menu row noselect">
+			<li class="header-element header-menu-view col-sm-4">
+				<a href="#">
+					<div class="header-icon header-icon-fa">
+						<i class="fa fa-home" aria-hidden="true"></i>
+					</div>
+					<div class="header-title header-title-fa">HOME</div>
+				</a>
+			</li>
+			<li class="header-element header-menu-view col-sm-4">
+				<a href="/#!/view-map/">
+					<div class="header-icon header-icon-fa">
+						<i class="fa fa-map" aria-hidden="true"></i>
+					</div>
+					<div class="header-title header-title-fa">MAP VIEW</div>
+				</a>
+			</li>
+			<li id="header-item-track" class="header-element header-menu-track col-sm-4">
+				<a href="/#!/track/">
+					<div class="header-title">FLEET TRACKING</div>
+				</a>
+			</li>
+			<li id="header-item-video" class="header-element header-menu-video col-sm-4">
+				<a href="/#!/record/">
+					<div class="header-title">RECORD VIEW</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div id="page-wrapper" ng-class="{'open': toggle}" ng-controller="MasterCtrl" ng-cloak>
+	<!-- Sidebar -->
+	<div id="sidebar-wrapper" ng-controller="listCtrl">
+		<ul class="sidebar">
+			<li class="sidebar-main">
+				<div class="sidebar-header">Vehicle List</div>
+				<a href="javascript:void(0)" class="menu-icon" ng-click="toggleSidebar()">
+					<span class="glyphicon glyphicon-transfer"></span>
+				</a>
+			</li>
+			<li class="sidebar-search">
+				<div class="sidebar-form">
+					<input type="text" ng-model="sidesearch" class="form-control" id="search" placeholder="Enter Name/Sim No.">
+					<span class="fa fa-search"></span>
+					<button type="button" class="btn sidebar-clear-btn" ng-click="clearFilter()">Clear</button>
+				</div>
+			</li>
+			<li class="sidebar-sort">
+				<div class="col-lg-8"></div>
+				<div class="menu-title col-lg-4" ng-controller="tabsController">
+					<span ng-click="tab(1)" class="fleet-status fa fa-sort"></span>
+					<span ng-click="tab(2)" class="hardware-status fa fa-sort"></span>
+					<span ng-click="tab(3)" class="alerts-status fa fa-sort"></span>
+				</div>
+			</li>
+		</ul>
+		<style type="text/css">
+			.text-online {
+				color: rgb(24, 163, 27);
+			}
+			
+			.text-offline {
+				color: rgb(130, 130, 130);
+			}
+			
+			.text-idling {
+				color: rgb(239, 239, 215);
+			}
+			
+			.text-parking {
+				color: rgb(59, 84, 168);
+			}
+			
+			.text-ignition {
+				color: rgb(152, 142, 40);
+			}
+		</style>
+		<div ng-controller="itemCtrl" class="sidebar-scroll" id="sidebar">
+			<ul sidebar class="sidebar grid effect-2 noselect" id="grid" ng-scrollbars ng-scrollbars-config="srclconfig">
+				<div class="sidebar-list-group" ng-repeat="group in sideLists | orderBy: '-key' | filter: sidesearch ">
+					<div class="group-title-open" ng-click="toggleGroup(group.key)">{{group.name}} ({{getGroupOnlineRecords(group.key)}}/{{group.val.length}})
+						<li class="toggle-group fa" ng-class="getGroupClass(group.key)"></li>
+					</div>
+					<div class="group-title-close">
+						<div class="group-number">({{getGroupOnlineRecords(group.key)}}/{{group.val.length}})</div>
+						<li class="toggle-group fa" ng-class="getGroupClass(group.key)" ng-click="toggleGroup(group.key)"></li>
+					</div>
+					<li class="sidebar-list bounceUp" ng-class="getOffline(item.idno)" ng-repeat="item in group.val | emptyToEnd | filter: sidesearch " uib-collapse="{{'group' + group.key}}">
+						<a ng-click="viewVehicle(item.idno)">
+							<!--<a ng-click="vehicleDropdown(item.idno)">-->
+							<div class="vehicle-icon col-sm-1"><span class="fa fa-fw" ng-class="getTypeClass(item.icon)"></span></div>
+							<div class="vehicle-list col-sm-7">{{item.userAccount.name}}</div>
+							<div class="menu-icon col-sm-4">
+								<span class="fa" aria-hidden="true" ng-class="getFleetClass(item.idno)" title=""></span>
+								<span class="fa" ng-click="viewHardwareIssue(item.idno); $event.stopPropagation();" ng-class="getHardwareClass(item.idno)" title="hardware issue"></span>
+								<span class="fa" ng-click="viewAlarmIssue(item.idno); $event.stopPropagation();" ng-class="getAlertClass(item.idno)" title="alarm"></span>
+							</div>
+						</a>
+						<!--<div class="vehicle-dropdown" ng-class="'id' + item.idno"  uib-collapse="{{isCarCollapse(item.idno)}}">
+							        <div class="car-top clearfix">
+							            <div class="car-details">
+							                <div class="name" title="id">{{item.idno}}</div>
+							                <div class="status" title="status">{{getOnlineText(item.idno)}}</div>
+							                <div class="address" title="last position"></div>
+							            </div>
+							            <div class="btns">
+							                <div class="btns-link" ng-click="viewVehicle(item.idno)"><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> Show</div>
+							                <div class="btns-link" ng-click="trackVehicle(item.idno)"><i class="fa fa-car fa-fw" aria-hidden="true"></i> Track</div>
+							                <div class="btns-link videos" ng-click="playVehicle(item.idno)"><i class="fa fa-video-camera fa-fw" aria-hidden="true"></i> Record</div>
+							            </div>
+							            <div ng-if="ifIssue(item.idno)" class="car-alert" >
+							            	<div class="btns-link car-alert-hardware" ng-click="viewHardwareIssue(item.idno)" ng-if="ifHardware(item.idno)"><i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i></div>
+							            	<div class="btns-link car-alert-alarm" ng-click="viewAlarmIssue(item.idno)" ng-if="ifAlarm(item.idno)"><i class="fa fa-bell fa-fw" aria-hidden="true"></i></div>
+							            </div>
+							        </div>
+								</div>-->
+					</li>
+				</div>
+			</ul>
+		</div>
+		<div sidebar-collapse class="sidebar-collapse">
+			<button type="button" class="btn" ng-click="expandAll()">Expand All</button>
+			<button type="button" class="btn" ng-click="collapseAll()">Collapse All</button>
+		</div>
+	</div>
+	<!-- End Sidebar -->
+	<div id="content-wrapper">
+		<div class="page-content">
+
+			<!-- End Header Bar -->
+			<!-- Main Content -->
+			<section class="content-wrapper" id="loading-bar-container">
+				<aside data-main-menu></aside>
+				<div class="main-content" id="main-view" data-ui-view></div>
+			</section>
+		</div>
+		<!-- End Page Content -->
+	</div>
+	<!-- End Content Wrapper -->
+</div>
+<!-- End Page Wrapper -->

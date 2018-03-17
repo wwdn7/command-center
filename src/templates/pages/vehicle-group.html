@@ -1,0 +1,88 @@
+<div class="col-lg-12">
+	<rd-widget>
+		<rd-widget-body>
+			<div class="col-sm-12">
+				<h3>Vehicle Group</h3>
+				<div class="vehicle-group-header detail-button">
+					<div class="btns-link">
+						<button class="btn" ng-click="addGroup()">Add Group</button>
+					</div>
+					<div class="btns-link">
+						<button class="btn" ng-click="expandAll()">Expand all</button>
+					</div>
+					<div class="btns-link">
+						<button class="btn" ng-click="collapseAll()">Collapse all</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="vehicle-group-container">
+				<div class="row">
+					<div class="col-sm-5">
+						<div class="vehicle-group-search">
+							<p>Find Device: <input ng-model="searchOther" style="color: black;"></p>
+						</div>
+						<div ui-tree="unGroupedTree" id="tree-root" data-max-depth="2">
+							<ol ui-tree-nodes ng-model="data" data-nodrop-enabled="true">
+								<li ng-repeat="group in data" ui-tree-node>
+									<div ui-tree-handle class="tree-node tree-node-content" data-nodrag>
+										<a class="btn btn-success btn-xs" data-nodrag ng-click="toggleGroup(this)"><span class="glyphicon" ng-class="{
+							          'glyphicon-chevron-right': collapsed,
+							          'glyphicon-chevron-down': !collapsed
+							        }"></span></a>
+										Ungrouped Vehicles
+									</div>
+									<ol class="tree-subnode-container" ui-tree-nodes="" ng-model="group.val" ng-class="{hidden: collapsed}">
+										<li class="tree-subnode" ng-repeat="item in group.val | filter: searchOther" ui-tree-node>
+											<div ui-tree-handle>
+												{{item.devName}}({{item.idno}})
+											</div>
+										</li>
+									</ol>
+								</li>
+							</ol>
+						</div>
+
+						<div class="vehicle-group-footer">
+							<!--<button ng-click="expandAll()">Expand all</button>
+							<button ng-click="collapseAll()">Collapse all</button>-->
+						</div>
+
+					</div>
+					<div class="col-sm-5">
+						<div class="vehicle-group-search">
+							<p>Find Device: <input ng-model="searchNode" style="color: black;"></p>
+						</div>
+						<div ui-tree="groupedTree" id="tree-root" data-max-depth="2" ng-if="vehicleGroup.length > 0">
+							<ol ui-tree-nodes ng-model="vehicleGroup" data-nodrop-enabled="true">
+								<li ng-repeat="group in vehicleGroup" ui-tree-node collapsed="isCollapsed(group.id)">
+									<div ui-tree-handle class="tree-node tree-node-content" data-nodrag>
+										<a class="btn btn-success btn-xs" data-nodrag ng-click="toggleGroup(this, $modelValue.id)"><span class="glyphicon" ng-class="{
+							          'glyphicon-chevron-right': collapsed,
+							          'glyphicon-chevron-down': !collapsed
+							        }"></span></a>
+										{{group.name}}
+										<a class="pull-right btn btn-danger btn-xs" data-nodrag ng-if="group.listDevice.length === 0" ng-click="deleteGroup(this)"><span class="glyphicon glyphicon-remove"></span></a>
+										<a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="editGroup(group.id)" style="margin-right: 8px;"><span class="glyphicon glyphicon-pencil"></span></a>
+									</div>
+									<ol class="tree-subnode-container" ui-tree-nodes="" ng-model="group.listDevice" ng-class="{hidden: collapsed}">
+										<li class="tree-subnode" ng-repeat="item in group.listDevice | filter: searchNode" ui-tree-node>
+											<div ui-tree-handle>
+												{{item.devName}}({{item.idno}})
+											</div>
+										</li>
+									</ol>
+								</li>
+							</ol>
+						</div>
+
+						<div class="vehicle-group-footer">
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</rd-widget-body>
+	</rd-widget>
+</div>

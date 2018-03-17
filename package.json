@@ -1,0 +1,48 @@
+{
+  "name": "desktop-command-center",
+  "version": "1.0.0",
+  "author": "Bevin Zhuang",
+  "descriptin": "The dashboard of management of ProVision software for fleet manager",
+  "repository": "",
+  "license": "",
+  "contributors": [
+    "Peng Cong <pengcong1218@hotmail.com>",
+    "Xu Peng <pong@pvcameras.com>"
+  ],
+  "scripts": {
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.4.1",
+    "gulp-connect": "^2.0.6",
+    "gulp-cssnano": "^2.1.0",
+    "gulp-htmlmin": "^1.3.0",
+    "gulp-less": "^3.0.5",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.0.1",
+    "gulp-usemin": "^0.3.7",
+    "gulp-watch": "^4.3.5",
+    "gulp-wrap": "^0.11.0",
+    "html-webpack-plugin": "^2.30.1",
+    "style-loader": "^0.19.0",
+    "video.js": "^6.2.4",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.5"
+  },
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "font-awesome": "^4.7.0",
+    "jspdf": "^1.3.5",
+    "lodash": "^4.17.4",
+    "video.js": "^6.2.4",
+    "videojs-flvjs": "^0.1.3",
+    "videojs-flvjs.js": "github:securogroup/videojs-flvjs"
+  }
+}

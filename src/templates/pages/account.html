@@ -1,0 +1,118 @@
+<div class="col-lg-12">
+	<rd-widget>
+		<rd-widget-body>
+			<div ng-controller="acc-setting" >
+				<div>
+					<v-accordion class="vAccordion--default">
+						<v-pane expanded>
+							<v-pane-header>
+								<h3>General Information</h3>
+							</v-pane-header>
+							<v-pane-content>
+								<!-- add general information -->
+								<div ng-if="isAdmin()" class="monthly-plan">Your current subscription plan: <strong>{{monthlyPlan}}</strong></div>
+							</v-pane-content>
+						</v-pane>
+					</v-accordion>
+					<!-- <h3 class="with-line">General Information</h3> -->
+				<v-accordion class="vAccordion--default">
+					<v-pane expanded>
+						<v-pane-header>
+							<h3>Change Password</h3>
+						</v-pane-header>
+						<v-pane-content>
+							<form name="modifyPassword" ng-submit="modifyPassword.$valid && updatePassword(modifyPassword)" novalidate>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group row clearfix" ng-class="{ 'pw-error': modifyPassword.$submitted && modifyPassword.originPassword.$invalid }">
+											<div class="col-sm-9">
+												<label for="originPassword">Original Password</label>
+												<input type="password" class="form-control" name="originPassword" ng-model="originPassword" minlength="6" required />
+												<img ng-if="modifyPassword.originPassword.$pending" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==">
+												<div class="help-block" ng-messages="modifyPassword.$submitted && modifyPassword.originPassword.$error">
+													<div ng-message="required">Please enter a value for this field.</div>
+													<div ng-message="minlength">Your field is too short.</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group row clearfix"  ng-class="{ 'pw-error': modifyPassword.$submitted && modifyPassword.inputPassword.$invalid }">
+											<div class="col-sm-9">
+												<label for="inputPassword">New Password</label>
+												<input type="password" class="form-control" name="inputPassword" ng-model="inputPassword" minlength="6" required />
+												<img ng-if="modifyPassword.inputPassword.$pending" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==">
+												<div class="help-block" ng-messages="modifyPassword.$submitted && modifyPassword.inputPassword.$error">
+													<div ng-message="required">Please enter a value for this field.</div>
+													<div ng-message="minlength">Your field is too short.</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group row clearfix"  ng-class="{ 'pw-error': modifyPassword.$submitted && modifyPassword.inputConfirmPassword.$invalid }">
+											<div class="col-sm-9">
+												<label for="inputConfirmPassword">Confirm Password</label>
+												<input type="password" class="form-control" name="inputConfirmPassword" ng-model="inputConfirmPassword" minlength="6" pwvalid={{inputPassword}} required/>
+												<img ng-if="modifyPassword.inputConfirmPassword.$pending" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==">
+												<div class="help-block" ng-messages="modifyPassword.$submitted && modifyPassword.inputConfirmPassword.$error">
+													<div ng-message="required">Please enter a value for this field.</div>
+													<div ng-message="minlength">Your field is too short.</div>
+													<div ng-message="pwvalid">Password not match!</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<style type="text/css">
+								.pw-error .help-block {
+									color: red;
+								}
+								</style>
+								<button type="submit" class="btn btn-primary">Update</button>
+							</form>
+						</v-pane-content>
+					</v-pane>
+				</v-accordion>
+
+				<v-accordion class="vAccordion--default">
+					<v-pane expanded>
+						<v-pane-header>
+							<h3>Speed Unit Setting</h3>
+						</v-pane-header>
+						<v-pane-content>
+							<button toggle-button active-text="Miles" inactive-text="Kilometers" ng-model="light.state">Speed Unit: </button><br>
+						</v-pane-content>
+					</v-pane>
+				</v-accordion>
+
+				 <v-accordion class="vAccordion--default" ng-if="isgod()">
+					<v-pane expanded>
+						<v-pane-header>
+							<h3>Secret Menu - Create User</h3>
+						</v-pane-header>
+						<v-pane-content>
+							<div ng-controller="godmode">
+								<button class="btn btn-primary" ng-click="addSubAcc()">Add new User</button>
+							</div>
+						</v-pane-content>
+					</v-pane>
+				</v-accordion> 
+
+				<!-- <v-accordion class="vAccordion--default">
+					<v-pane expanded>
+						<v-pane-header>
+							<h3>Contact Us</h3>
+						</v-pane-header>
+						<v-pane-content>
+							add Contact Us information
+						</v-pane-content>
+					</v-pane>
+				</v-accordion> -->
+			</div>
+		</div>
+	</rd-widget-body>
+</rd-widget>
+</div>

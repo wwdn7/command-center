@@ -1,0 +1,99 @@
+<div class="row car-list" ng-controller="alertList" update-address>
+	<div class="col-lg-12">
+		<rd-widget>
+			<rd-widget-header icon="fa-tasks" title="Alert List">
+				<button class= "back-button" ng-click="goBack()">Back</button>
+				<table-export></table-export>
+				<!--<div class="alert-header-btns" title="Show Location Address" ng-click="geocodeAll()">
+					<span class="fa-stack fa-lg">
+					  <i class="fa fa-circle fa-stack-2x"></i>
+					  <i class="fa fa-map-marker fa-stack-1x fa-inverse"></i>
+					</span>
+				</div>-->
+			</rd-widget-header>
+			<multi-inputs></multi-inputs>
+			<rd-widget-body>
+				<style type="text/css">
+					.warning {
+						color: red;
+					}
+
+					#alert-map {
+						width: 100%;
+						height: 350px;
+					}
+
+					.alert-table {
+						min-height: 240px;
+					}
+				</style>
+				<div class="table-responsive alert-table">
+					<table class="table table-condensed table-hover" id="export-table">
+						<thead>
+							<tr>
+								<th>&#35;</th>
+								<th class="sortable" ng-click="singleSort('armTime')">
+									Time
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('armTime'), 'caret-up':sortAscend('armTime')}">
+							</span>
+								</th>
+								<th class="sortable" ng-click="singleSort('devName')">
+									Vehicle
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('devName'), 'caret-up':sortAscend('devName')}">
+							</span>
+								</th>
+								<th class="sortable" ng-click="singleSort('armCnt')">
+									Alarm Info
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('armCnt'), 'caret-up':sortAscend('armCnt')}">
+							</span>
+								</th>
+								<th class="sortable" ng-click="singleSort('local')">
+									Location
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('local'), 'caret-up':sortAscend('local')}">
+							</span>
+								</th>
+								<th class="sortable">Options<span class="caret-blank">
+							</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<list-loading>
+								<tr ng-repeat="a in alerts | orderBy:[filterSort, sortType, secondSortType, thirdSortType]" ng-show="(filterSort(a) == 1) && ($index >= firstIndex) && ($index < lastIndex)">
+									<td class="table-row-index">{{ $index + 1 }}</td>
+									<td>{{a.armTime | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</td>
+									<td>{{a.devName}}</td>
+									<td>{{a.armCnt}}</td>
+									<td>{{a.local}}</td>
+									<!--<td>X: {{a.param1/16}} Y: {{a.param2/16}} Z: {{a.param3/16}}</td>-->
+									<td>
+										<div class="btn-group" uib-dropdown is-open="false">
+											<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+								        <span class="fa fa-ellipsis-h" style="color: #333"></span>
+								    </button>
+											<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+												<li role="menuitem" ng-click="showVehicle(a)">
+													<a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>&nbsp; Show on Map</a>
+												</li>
+												<!-- <li role="menuitem" ng-click="showPicture(a)" ng-if="a.armType==49">
+											<a href="javascript:void(0)"><i class="fa fa-picture-o fa-fw" aria-hidden="true"></i>&nbsp; Show Picture</a>
+										</li> -->
+										<li role="menuitem" ng-click="showVideo(a)" ng-if="a.armType==3">
+											<a href="javascript:void(0)"><i class="fa fa-file-video-o fa-fw" aria-hidden="true"></i>&nbsp; Show Video</a>
+										</li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							</list-loading>
+						</tbody>
+					</table>
+					<div ng-if="alerts.length == 0" class="list-free"><strong>Happy Days! No record found!</strong></div>
+				</div>
+			</rd-widget-body>
+			<rd-widget-footer>
+				<ul uib-pagination total-items="(alerts | filter:data.filterTable).length" ng-model="data.currentPage" ng-change="updatePageIndexes()" max-size="data.maxPaginationSize" items-per-page="data.itemsPerPage" boundary-links="true" boundary-link-numbers="true" rotate="false" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+				</ul>
+			</rd-widget-footer>
+		</rd-widget>
+	</div>
+</div>

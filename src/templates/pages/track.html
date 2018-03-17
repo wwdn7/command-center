@@ -1,0 +1,341 @@
+<div ng-controller="trackResult">
+	<div class="row">
+		<div class="col-lg-8">
+			<rd-widget>
+				<rd-widget-body>
+					<map-track></map-track>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+		<div class="col-lg-4">
+			<rd-widget>
+				<rd-widget-body>
+					<query-vehicle id="track-result"></query-vehicle>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+	</div>
+	<div class="col-lg-12">
+		<rd-widget>
+			<rd-widget-body>
+				<style type="text/css">
+					.highlight-red {
+						color: red;
+					}
+
+					.highlight-orange {
+						color: orange;
+					}
+
+					.highlight-green {
+						color: green;
+					}
+				</style>
+
+				<div class="journey-list" ng-if="afterLoading">
+					<h3 style="float: left;">{{devicename}}</h3>
+					<multi-table-export></multi-table-export>
+				</div>
+				<hr/>
+
+				<rd-widget class="track-list">
+					<rd-widget-body>
+						<uib-tabset active="active">
+							<uib-tab index="0" heading="Trips">
+								<div class="table-responsive">
+									<table class="table table-condensed table-hover">
+										<thead>
+											<tr>
+												<th class="table-row-index">&#35;</th>
+												<th class="sortable table-date-time" ng-click="singleSort('startTime')">Date/Time<span class="caret-blank" ng-class="{'caret-down':sortDescend('startTime'), 'caret-up':sortAscend('startTime')}"></span></th>
+												<th class="sortable table-depart-arrive">Departed/Arrived</th>
+												<th class="sortable table-duration" ng-click="singleSort('sc')">Duration<span class="caret-blank" ng-class="{'caret-down':sortDescend('shiChang'), 'caret-up':sortAscend('shiChang')}"></span></th>
+												<th class="sortable table-distance" ng-click="singleSort('lc')">Distance<span class="caret-blank" ng-class="{'caret-down':sortDescend('lucheng'), 'caret-up':sortAscend('lucheng')}"></span></th>
+												<th class="table-option">Options</th>
+											</tr>
+										</thead>
+										<tbody class="track-content">
+											<list-loading class="track-table">
+												<tr ng-show="trips.length!=0" ng-repeat="trip in trips | orderBy:[filterSort, sortType, secondSortType, thirdSortType]" ng-click="showRoute(trip)" ng-class="{clicked: rowClicked===trip}">
+													<td class="table-row-index">{{ $index + 1 }}</td>
+													<td class="table-date-time">{{trip.start | date:"dd/MM/yyyy 'at' HH:mm:ss"}}<br />{{trip.end | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</td>
+													<td class="table-depart-arrive" address-fade>{{trip.beginWeizhi}}<br />{{trip.endWeizhi}}</td>
+													<td class="table-duration">{{trip.shiChang}}</td>
+													<td class="table-distance">{{trip.lucheng}}</td>
+													<td ng-click="$event.stopPropagation();" class="table-option">
+														<div class="btn-group" uib-dropdown is-open="false">
+															<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+													<span class="fa fa-ellipsis-h" style="color: #333"></span>
+												</button>
+															<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-toggle uib-dropdown-menu role="menu" aria-labelledby="single-button">
+																<li role="menuitem" ng-click="playRoutes(trip);">
+																	<a href="javascript:void(0)"><i class="fa fa-location-arrow fa-fw" aria-hidden="true"></i>&nbsp; Play Route</a>
+																</li>
+																<li role="menuitem" ng-click="playVideo(trip[0].devIdno, trip.startTime, trip.endTime)">
+																	<a href="javascript:void(0)"><i class="fa fa-play fa-fw" aria-hidden="true"></i>&nbsp; Video Replay</a>
+																</li>
+															</ul>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td ng-if="trips.length==0 && afterLoading" class="list-free"><strong>Ahh Ooh ~ No Trips recorded!</strong></td>
+													<!--<td style="font-size: 35px !important; font-weight: bold; text-align: center; color:#1d3f72" ng-show="trips.length==0 && afterLoading" colspan="4">
+														There Are No Trips.
+													</td>-->
+												</tr>
+											</list-loading>
+										</tbody>
+									</table>
+								</div>
+							</uib-tab>
+							<uib-tab index="1" heading="Speeding">
+								<div class="table-responsive">
+									<table class="table table-condensed table-hover">
+										<thead>
+											<tr>
+												<th class="table-row-index">&#35;</th>
+												<th class="sortable table-time-location" ng-click="singleSort('start')">
+													Start Location
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('start'), 'caret-up':sortAscend('start')}"></span>
+												</th>
+												<th class="sortable table-time-location" ng-click="singleSort('end')">
+													End Location
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('end'), 'caret-up':sortAscend('end')}"></span>
+												</th>
+												<th class="sortable table-speed-speed" ng-click="singleSort('ts')">
+													Top Speed
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('topSpeed'), 'caret-up':sortAscend('topSpeed')}"></span>
+												</th>
+												<th class="sortable table-speed-speed" ng-click="singleSort('sl')">
+													Speed Limit
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('speedLimit'), 'caret-up':sortAscend('speedLimit')}"></span>
+												</th>
+												<th class="sortable table-over-speed" ng-click="singleSort('os')">
+													Over Speed
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('overSpeed'), 'caret-up':sortAscend('overSpeed')}"></span>
+												</th>
+												<th class="sortable table-speed-duration" ng-click="singleSort('d')">
+													Duration
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('Duration'), 'caret-up':sortAscend('Duration')}"></span>
+												</th>
+												<th class="table-option">Options</th>
+												<!-- <th style="width: 1%"></th> -->
+											</tr>
+										</thead>
+										<tbody class="track-content">
+											<list-loading class="track-table">
+												<tr ng-show="speedAlerts.length!=0" ng-repeat="speedAlert in speedAlerts | orderBy:[filterSort, sortType, secondSortType, thirdSortType]" ng-click="showSpeeding(speedAlert)" ng-class="{clicked: rowClicked===speedAlert}">
+													<td class="table-row-index">{{ $index + 1 }}</td>
+													<td class="table-time-location" address-fade>{{speedAlert.start | date:"dd/MM/yyyy 'at' HH:mm:ss"}}<br />{{speedAlert.startL}}</td>
+													<td class="table-time-location" address-fade>{{speedAlert.end | date:"dd/MM/yyyy 'at' HH:mm:ss"}}<br />{{speedAlert.endL}}</td>
+													<td class="table-speed-speed">{{speedAlert.topSpeed}}</td>
+													<td class="table-speed-speed">{{speedAlert.speedLimit}}</td>
+													<td class="table-over-speed" ng-class="highlight(speedAlert.os)">{{speedAlert.overSpeed}}</td>
+													<td class="table-speed-duration">{{speedAlert.duration}}</td>
+													<td ng-click="$event.stopPropagation();" class="table-option">
+														<div class="btn-group" uib-dropdown is-open="false">
+															<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+																<span class="fa fa-ellipsis-h" style="color: #333"></span>
+															</button>
+															<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-toggle uib-dropdown-menu role="menu" aria-labelledby="single-button">
+																<!-- <li role="menuitem" ng-click="playRoutes(trip);">
+																	<a href="javascript:void(0)"><i class="fa fa-location-arrow fa-fw" aria-hidden="true"></i>&nbsp; Play Route</a>
+																</li> -->
+																<li role="menuitem" ng-click="playVideo(speedAlert[0].devIdno, speedAlert.startTime, speedAlert.endTime)">
+																	<a href="javascript:void(0)"><i class="fa fa-play fa-fw" aria-hidden="true"></i>&nbsp; Video Replay</a>
+																</li>
+															</ul>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td ng-if="speedAlerts.length==0 && speedingAlertsAfterLoading" class="list-free"><strong>Happy Days! No Speeding Violation found!</strong></td>
+													<!--<td style="font-size: 35px !important; font-weight: bold; text-align: center; color:#1d3f72" ng-show="speedAlerts.length==0 && speedingAlertsAfterLoading" colspan="5">
+														There Is No Speeding Violation.
+													</td>-->
+												</tr>
+											</list-loading>
+										</tbody>
+									</table>
+								</div>
+							</uib-tab>
+							<uib-tab index="2" heading="ADAS">
+								<div class="table-responsive">
+									<table class="table table-condensed table-hover">
+										<thead>
+											<tr>
+												<th class="table-row-index">&#35;</th>
+												<th class="sortable table-date-time" ng-click="singleSort('dateTime')">
+													Date/Time
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('dateTime'), 'caret-up':sortAscend('dateTime')}"></span>
+												</th>
+												<!-- <th class="sortable table-event" ng-click="singleSort('event')"> -->
+												<th class="sortable table-event">
+													Event
+													<!-- <span class="caret-blank" ng-class="{'caret-down':sortDescend('event'), 'caret-up':sortAscend('event')}"></span> -->
+												</th>
+												<th class="sortable table-event-speed" ng-click="singleSort('s')">
+													Speed
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('speed'), 'caret-up':sortAscend('speed')}"></span>
+												</th>
+												<!-- <th class="sortable table-depart-arrive" ng-click="singleSort('location')"> -->
+												<th class="sortable table-depart-arrive">
+													Location
+													<!-- <span class="caret-blank" ng-class="{'caret-down':sortDescend('location'), 'caret-up':sortAscend('location')}"></span> -->
+												</th>
+												<th class="table-option">Options</th>
+											</tr>
+										</thead>
+										<tbody class="track-content">
+											<list-loading class="track-table">
+												<tr ng-show="adasAlerts.length!=0" ng-repeat="adasAlert in adasAlerts | orderBy:[filterSort, sortType, secondSortType, thirdSortType]" ng-click="showAdas(adasAlert)" ng-class="{clicked: rowClicked===adasAlert}">
+													<td class="table-row-index">{{ $index + 1 }}</td>
+													<td class="table-date-time">{{adasAlert.dateTime | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</td>
+													<td class="table-event">{{adasAlert.event}}</td>
+													<td class="table-event-speed">{{adasAlert.speed}}</td>
+													<td class="table-depart-arrive">{{adasAlert.location}}</td>
+													<td ng-click="$event.stopPropagation();" class="table-option">
+														<div class="btn-group" uib-dropdown is-open="false">
+															<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+													<span class="fa fa-ellipsis-h" style="color: #333"></span>
+															</button>
+															<ul disable-element class="dropdown-menu dropdown-menu-right" uib-dropdown-toggle uib-dropdown-menu role="menu" aria-labelledby="single-button">
+																<li role="menuitem" ng-click="showPicture(adasAlert)">
+																	<a href="javascript:void(0)" ng-disabled="true"><i class="fa fa-picture-o fa-fw" aria-hidden="true"></i>&nbsp; Show Picture</a>
+																</li>
+																<li role="menuitem" ng-click="downloadPicture(adasAlert)">
+																	<a href="javascript:void(0)"><i class="fa fa-download fa-fw" aria-hidden="true"></i>&nbsp; Download Picture</a>
+																</li>
+															</ul>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td ng-if="adasAlerts.length == 0 && adasAlertsAfterLoading" class="list-free"><strong>Happy Days! No ADAS alert found!</strong></td>
+													<!--<td style="font-size: 35px !important; font-weight: bold; text-align: center; color:#1d3f72" ng-show="adasAlerts.length == 0 && adasAlertsAfterLoading" colspan="4">
+														There Is No ADAS Alert.
+													</td>-->
+												</tr>
+											</list-loading>
+										</tbody>
+									</table>
+								</div>
+							</uib-tab>
+							<uib-tab index="3" heading="Driving Events">
+								<div class="table-responsive">
+									<table class="table table-condensed table-hover">
+										<!-- <table class="table table-condensed table-hover" style="background-color: white;" ng-if="gAlerts.length > 0"> -->
+										<thead>
+											<tr>
+												<th class="table-row-index">&#35;</th>
+												<th class="sortable table-date-time" ng-click="singleSort('dateTime')">
+													Date/Time
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('dateTime'), 'caret-up':sortAscend('dateTime')}"></span>
+												</th>
+												<!-- <th class="sortable table-event" ng-click="singleSort('event')"> -->
+												<th class="sortable table-event">
+													Event
+													<!-- <span class="caret-blank" ng-class="{'caret-down':sortDescend('event'), 'caret-up':sortAscend('event')}"></span> -->
+												</th>
+												<th class="sortable table-event-speed" ng-click="singleSort('s')">
+													Speed
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('speed'), 'caret-up':sortAscend('speed')}"></span>
+												</th>
+												<!-- <th class="sortable table-depart-arrive" ng-click="singleSort('location')"> -->
+												<th class="sortable table-depart-arrive">
+													Location
+													<!-- <span class="caret-blank" ng-class="{'caret-down':sortDescend('location'), 'caret-up':sortAscend('location')}"></span> -->
+												</th>
+												<th class="table-option">Options</th>
+											</tr>
+										</thead>
+										<tbody class="track-content">
+											<list-loading class="track-table">
+												<tr ng-show="gAlerts.length!=0" ng-repeat="gAlert in gAlerts | orderBy:[filterSort, sortType, secondSortType, thirdSortType]" ng-click="showGSensor(gAlert)" ng-class="{clicked: rowClicked===gAlert}">
+													<td class="table-row-index">{{ $index + 1 }}</td>
+													<td class="table-date-time">{{gAlert.dateTime | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</td>
+													<td class="table-event">{{gAlert.event}}</td>
+													<td class="table-event-speed">{{gAlert.speed}}</td>
+													<td class="table-depart-arrive">{{gAlert.location}}</td>
+													<td ng-click="$event.stopPropagation();" class="table-option">
+														<div class="btn-group" uib-dropdown is-open="false">
+															<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+													<span class="fa fa-ellipsis-h" style="color: #333"></span>
+												</button>
+															<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-toggle uib-dropdown-menu role="menu" aria-labelledby="single-button">
+																<li role="menuitem" ng-click="playGVideo(gAlert.devIdno, gAlert.dateTimeStr)">
+																	<a href="javascript:void(0)"><i class="fa fa-play fa-fw" aria-hidden="true"></i>&nbsp; Playback Video</a>
+																</li>
+																<li disable-element role="menuitem" ng-click="downloadVideo(gAlert.devIdno, gAlertstartTime, gAlert.endTime)">
+																	<a href="javascript:void(0)"><i class="fa fa-download fa-fw" aria-hidden="true"></i>&nbsp; Download Video</a>
+																</li>
+															</ul>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td ng-if="gAlerts.length == 0 && gAlertsAfterLoading" class="list-free"><strong>Happy Days! No Driving Events found!</strong></td>
+													<!--<td style="font-size: 35px !important; font-weight: bold; text-align: center; color:#1d3f72" ng-show="gAlerts.length == 0 && gAlertsAfterLoading" colspan="4">
+														No Driving Events Happened.
+													</td>-->
+												</tr>
+											</list-loading>
+										</tbody>
+									</table>
+								</div>
+							</uib-tab>
+
+							<uib-tab index="4" heading="Custom Events">
+								<div class="table-responsive">
+									<table class="table table-condensed table-hover">
+										<thead>
+											<tr>
+												<th class="table-row-index">&#35;</th>
+												<th class="sortable table-date-time" ng-click="singleSort('dateTime')">
+													Date/Time
+													<span class="caret-blank" ng-class="{'caret-down':sortDescend('dateTime'), 'caret-up':sortAscend('dateTime')}"></span>
+												</th>
+												<th class="sortable table-event">
+													Event
+												</th>
+												<th class="sortable table-depart-arrive">
+													Location
+												</th>
+											</tr>
+										</thead>
+										<tbody class="track-content">
+											<list-loading class="track-table">
+												<tr ng-show="allEvents.length!=0" ng-repeat="allEvent in allEvents | orderBy:[filterSort, sortType, secondSortType, thirdSortType]" ng-click="showAllEvents(allEvents)" ng-class="{clicked: rowClicked===allEvent}">
+													<td class="table-row-index">{{ $index + 1 }}</td>
+													<td class="table-date-time">{{allEvent.dateTime | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</td>
+													<td class="table-event">{{allEvent.event}}</td>
+													<td class="table-depart-arrive">{{allEvent.location}}</td>
+												</tr>
+												<tr>
+													<td ng-if="allEvents.length == 0 && allEventssAfterLoading" class="list-free"><strong>No Events found!</strong></td>
+												</tr>
+											</list-loading>
+										</tbody>
+									</table>
+								</div>
+							</uib-tab>
+						</uib-tabset>
+					</rd-widget-body>
+					<!--<rd-widget-footer>
+				<uib-pagination total-items="(records | filter:data.filterTable).length" ng-model="data.currentPage" ng-change="updatePageIndexes()" max-size="data.maxPaginationSize" items-per-page="data.itemsPerPage" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+				</uib-pagination>
+			</rd-widget-footer>-->
+				</rd-widget>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>
+<script>
+	// $.get('https://roads.googleapis.com/v1/speedLimits?path=54.099529, -6.726962&key=AIzaSyDANsEavAQS9nwX9baymNwCxnWmjZh4gHQ', function(data){
+	// console.log(data);
+	// });
+	// $.get('https://roads.googleapis.com/v1/speedLimits?placeId=ChIJbVwCcYsSZ0gR76qLnHiOVeY&key=AIzaSyDANsEavAQS9nwX9baymNwCxnWmjZh4gHQ', function(data){
+	// console.log(data);
+	// });
+</script>

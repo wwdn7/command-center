@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" ng-app="PVision">
+
+	<head>
+		<meta Content-Type: "text/html" charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>ProVision Management Tool</title>
+		<!--Import Google Map-->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDANsEavAQS9nwX9baymNwCxnWmjZh4gHQ&language=en&region=UK">
+		</script>
+		<!-- Import MarkerClusterer -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/js-marker-clusterer/1.0.0/markerclusterer.js">
+		</script>
+		<!--Import Roboto Google font-->
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:700" rel="stylesheet">
+		<!--Import Icon-->
+		<link rel="shortcut icon" type="image/png" href="/img/ProVision-icon.png" />
+		<!--Import aws database-->
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+		<!--Custom styles-->
+		<link rel="stylesheet" type="text/css" href="css/rdash.css">
+		<link rel="stylesheet" type="text/css" href="css/custom.css">
+		<link rel="stylesheet" type="text/css" href="css/animate.css">
+		<link rel="stylesheet" type="text/css" href="css/_msgCenter.css">
+		<link rel="stylesheet" type="text/css" href="datepicker/daterangepicker.css">
+		<!--Import PouchDB-->
+		<script type="text/javascript" src="pouchdb/pouchdb.min.js"></script>
+		<script type="text/javascript" src="pouchdb/pouchdb.find.min.js"></script>
+		<!--Import moment js-->
+		<script type="text/javascript" src="datepicker/moment.min.js"></script>
+		<script type="text/javascript" src="datepicker/pdfmake.min.js"></script>
+		<script type="text/javascript" src="datepicker/vfs_fonts.js"></script>
+		<!-- STYLES -->
+		<!-- build:css lib/css/main.min.css -->
+		<link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="components/angular-toastr/dist/angular-toastr.min.css">
+		<link rel="stylesheet" type="text/css" href="components/sweetalert2/dist/sweetalert2.min.css">
+		<link rel="stylesheet" type="text/css" href="components/angular-loading-bar/build/loading-bar.min.css">
+		<link rel="stylesheet" type="text/css" href="components/v-accordion/dist/v-accordion.min.css">
+		<link rel="stylesheet" type="text/css" href="components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
+		<link rel="stylesheet" type="text/css" href="components/angular-ui-tree/dist/angular-ui-tree.min.css">
+		<!-- endbuild -->
+		<!-- SCRIPTS -->
+		<!-- build:js lib/js/main.min.js -->
+		<script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script>
+		<script type="text/javascript" src="components/angular/angular.min.js"></script>
+		<script type="text/javascript" src="components/angular-sanitize/angular-sanitize.min.js"></script>
+		<script type="text/javascript" src="components/angular-indexedDB/angular-indexed-db.min.js"></script>
+		<script type="text/javascript" src="components/angular-animate/angular-animate.min.js"></script>
+		<script type="text/javascript" src="components/angular-messages/angular-messages.min.js"></script>
+		<script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+		<script type="text/javascript" src="components/ngstorage/ngStorage.min.js"></script>
+		<script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
+		<script type="text/javascript" src="components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
+		<script type="text/javascript" src="components/angular-loading-bar/build/loading-bar.min.js"></script>
+		<script type="text/javascript" src="components/chart.js/dist/Chart.min.js"></script>
+		<script type="text/javascript" src="components/angular-chart.js/dist/angular-chart.min.js"></script>
+		<script type="text/javascript" src="components/sweetalert2/dist/sweetalert2.min.js"></script>
+		<script type="text/javascript" src="components/angular-h-sweetalert/dist/ngSweetAlert2.min.js"></script>
+		<script type="text/javascript">
+			var ngSweetAlert2 = window.ngSweetAlert2;
+		</script>
+		<script type="text/javascript" src="components/ngFitText/dist/ng-FitText.min.js"></script>
+		<script type="text/javascript" src="components/swfobject/swfobject/src/swfobject.js"></script>
+		<script type="text/javascript" src="components/v-accordion/dist/v-accordion.min.js"></script>
+		<script type="text/javascript" src="components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script type="text/javascript" src="components/ng-scrollbars/dist/scrollbars.min.js"></script>
+		<script type="text/javascript" src="components/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
+		<script type="text/javascript" src="components/js-xlsx/dist/xlsx.core.min.js"></script>
+		<script type="text/javascript" src="components/file-saverjs/FileSaver.min.js"></script>
+		<script type="text/javascript" src="components/tableexport.js/dist/js/tableexport.min.js"></script>
+		<!-- endbuild -->
+		<!--Import daterangepicker-->
+		<script type="text/javascript" src="datepicker/daterangepicker.js"></script>
+		<!-- Custom Scripts -->
+		<script type="text/javascript" src="js/dashboard.min.js"></script>
+	</head>
+
+	<body>
+		<div ui-view></div>
+	</body>
+
+</html>

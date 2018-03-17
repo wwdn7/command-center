@@ -1,0 +1,50 @@
+<div class="track-query">
+	<div class="track-query-component">
+		<h4>Select vehicle</h4>
+		<input type="text" ng-model="device" placeholder="Enter vehicle name/id" uib-typeahead="vehicle as vehicle.name for vehicle in vehiclelist | filter:$viewValue | limitTo:10" class="form-control" typeahead-show-hint="true" typeahead-min-length="0" typeahead-no-results="noResults" style="width: 80%;">
+		<div ng-show="noResults">
+			<i class="fa fa-times"></i> No Results Found
+		</div>
+		<!--<select ng-model="vehicle_id" ng-options="vehicle.idno as vehicle.userAccount.name for vehicle in vehiclelist" style="color: #555;">
+		</select>-->
+	</div>
+	<div class="track-query-component row">
+		<div class="datetime-rangepicker">
+			<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+			<span></span> <b class="caret"></b>
+		</div>
+		<!--<div class="col-md-6">
+			<h4>From</h4>
+			<div class="input-group">
+				<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="startDate" is-open="popup1.opened" ng-click="open1()" datepicker-options="dateOptions" ng-required="true" />
+				<span class="input-group-btn">
+		            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+		          </span>
+			</div>
+			<br/>
+			<div uib-timepicker ng-model="beginTime" hour-step="hstep" minute-step="mstep" second-step="sstep" show-seconds="true" show-meridian="ismeridian"></div>
+		</div>
+		<div class="col-md-6">
+			<h4>To</h4>
+			<div class="input-group">
+				<input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="endDate" popup-placement="auto bottom" is-open="popup2.opened" ng-click="open2()" datepicker-options="dateOptions" ng-required="true" />
+				<span class="input-group-btn">
+		            <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+		          </span>
+			</div>
+			<br/>
+			<div uib-timepicker ng-model="endTime" hour-step="hstep" minute-step="mstep" second-step="sstep" show-seconds="true" show-meridian="ismeridian"></div>
+		</div>-->
+	</div>
+	<div class="query-result">
+		<button class="btn btn-primary" ng-click="queries()" style="position: relative; font-size: large">Search</button>
+	</div>
+	<!-- <div class="detail-button">
+		<div class="btns-link"><button class="btn" ng-click="showDetail(vehiData.devStatus.devIdno)">
+		<i class="fa fa-car fa-fw" aria-hidden="true"></i>Show</button></div>
+		<div class="btns-link"><button class="btn" ng-disabled="ifRecord()" ng-click="playRecord(vehiData.devStatus.devIdno)" title="{{recTitle()}}">
+		<i class="fa fa-video-camera fa-fw" aria-hidden="true"></i>Record</button></div>
+		<div class="btns-link"><button class="btn" ng-disabled="ifAlarm(vehiData.devStatus.devIdno)" ng-click="viewAlarmIssue(vehiData.devStatus.devIdno)" title="{{notiTitle()}}">
+		<i class="fa fa-bell fa-fw" aria-hidden="true"></i>Notifications</button></div>
+	</div> -->
+</div>

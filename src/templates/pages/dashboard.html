@@ -1,0 +1,63 @@
+<div class="row" ng-controller="tachoCtrl">
+	<div class="tacho-item col-lg-4">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="tacho-header">Fleet Status</div>
+				<!--<rd-loading promise="Loading">-->
+					<div class="fleet-tacho" ng-controller="donut" stop-event>
+						<span>{{"#Total: " + activeRecords}}</span>
+						<span ng-hide="inactiveRecords == 0">{{" #Inactivated: " + inactiveRecords}}</span>
+						<div class="barOne">
+							<canvas id="barOne" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-dataset-override="datasetOverride" chart-colors="colors" chart-click="clickToList" chart-options="options"></canvas>
+						</div>
+					</div>
+				<!--</rd-loading>-->
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	<div class="tacho-item col-lg-4" ng-controller="hardwareCtrl">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="tacho-header">Hardware Status</div>
+				<!--<rd-loading promise="Loading">-->
+					<div class="hardware-container">
+						<div ng-class="numToText(index)" ng-click="toList()">
+							<div class="hardware-content">
+								<h1 id="hardware-chart-number" class="hardware-chart-number" data-fittext="0.8" data-fittext-max="170" data-fittext-load-delay="500">{{index}}</h1>
+							</div>
+						</div>
+					</div>
+				<!--</rd-loading>-->
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+	<div class="tacho-item col-lg-4">
+		<rd-widget>
+			<rd-widget-body>
+				<div class="tacho-header">Driving Events</div>
+				<!--<rd-loading promise="Loading">-->
+					<div class="fleet-tacho"  stop-event>
+						<!--<br>-->
+						<div ng-controller="alertCtrl">
+							<canvas id="driving-events-tacho" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-dataset-override="datasetOverride" chart-colors="colors" chart-click="clickToList" chart-options="options"></canvas>
+						</div>
+					</div>
+				<!--</rd-loading>-->
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>
+<div class="row" ng-controller="statusListCtrl">
+	<div class="col-lg-12">
+		<rd-widget>
+			<rd-widget-body>
+				<style type="text/css">
+					#map-view {
+						min-height: 200px;
+					}
+				</style>
+				<map-view></map-view>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>

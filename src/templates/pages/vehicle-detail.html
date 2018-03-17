@@ -1,0 +1,111 @@
+<div ng-controller="vehiDetail">
+	<div class="row">
+		<div class="col-lg-7">
+			<rd-widget>
+				<rd-widget-body>
+					<map-vehicle id="map-canvas"></map-vehicle>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+		<div class="col-lg-5">
+			<rd-widget>
+				<rd-widget-body>
+					<div class="row">
+						<div class="detail-top col-md-12">{{vehiData.devInfo.userAccount.name}}
+						<span ng-if="vehiData.devInfo.userAccount.name" ng-click="editdevice()" class="edit-device fa fa-pencil-square-o fa-fw " aria-hidden="true"></span></div>
+						<!--<span class="divider"></span>
+					<div class="detail-top col-md-6"><i class="fa fa-road fa-fw" aria-hidden="true"></i>&nbsp; 30km</div>-->
+					</div>
+					<div class="row">
+						<div class="detail-header col-md-4"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i>&nbsp; Last Report</div>
+						<div class="detail-header col-md-5"><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>&nbsp; Location</div>
+						<div class="detail-header col-md-3"><i class="fa fa-signal fa-fw" aria-hidden="true"></i>&nbsp; Online</div>
+					</div>
+					<div class="row">
+						<div class="detail-element col-md-4">
+							{{vehiData.devStatus.gpsTime | date:"dd/MM/yyyy 'at' HH:mm:ss"}}
+							<!--<span data-tooltip="{{vehiData.devStatus.gpsTimeStr}} "data-tooltip-position="bottom">{{vehiData.devStatus.gpsTimeStr}}</span>-->
+						</div>
+						<div class="detail-element col-md-5" uib-tooltip="{{vehiData.location}}">
+							{{vehiData.location}}
+							<!--<span data-tooltip="{{location}} "data-tooltip-position="bottom">{{location}}</span>-->
+						</div>
+						<div class="detail-element col-md-3">
+							{{vehiData.online}}
+							<!--<span data-tooltip="{{active()}} "data-tooltip-position="bottom">{{active()}}</span>-->
+						</div>
+					</div>
+					<div class="row">
+						<div class="detail-header col-md-4"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>&nbsp; Speed</div>
+						<div class="detail-header col-md-4"><i class="fa fa-car fa-fw" aria-hidden="true"></i>&nbsp; Mileage</div>
+						<div class="detail-header col-md-4"><i class="fa fa-phone fa-fw" aria-hidden="true"></i>&nbsp; SIM Number</div>
+					</div>
+					<div class="row">
+						<div class="detail-element col-md-4">
+							{{vehiData.isPark}}
+							<!--<span data-tooltip="{{speed}} km/h ({{fangxiang()}})"data-tooltip-position="bottom">{{speed}} km/h ({{fangxiang()}})</span>-->
+						</div>
+						<div class="detail-element col-md-4">
+							{{vehiData.devStatus.liCheng}}
+							<!--<span data-tooltip="{{distance}}km "data-tooltip-position="bottom">{{distance}}km</span>-->
+						</div>
+						<div class="detail-element col-md-4">
+							{{vehiData.devStatus.devIdno}}
+							<!--<span data-tooltip="{{vehiData.devInfo.idno}}"data-tooltip-position="bottom">{{vehiData.devInfo.idno}}</span>-->
+						</div>
+					</div>
+					<div class="row">
+						<div class="detail-header col-md-4">Network Signal</div>
+						<div class="detail-header col-md-2">GPS</div>
+						<div class="detail-header col-md-4">Disk Status</div>
+						<div class="detail-header col-md-2">ACC</div>
+					</div>
+					<div class="row">
+						<div class="detail-element col-md-4">{{vehiData.network}}</div>
+						<div class="detail-element col-md-2">{{vehiData.gps}}</div>
+						<div class="detail-element col-md-4" uib-tooltip="{{vehiData.diskStatus}}">{{vehiData.diskStatus}}</div>
+						<div class="detail-element col-md-2">{{vehiData.acc}}</div>
+					</div>
+					<div class="row">
+						<div class="detail-header col-md-12">Video Channels</div>
+					</div>
+					<div class="row">
+						<div class="detail-element col-md-12" uib-tooltip="{{vehiData.vidInfo}}">{{vehiData.vidInfo}}</div>
+					</div>
+					<div class="detail-button row">
+						<div class="btns-link"><button class="btn" ng-click="trackDetail(vehiData.devStatus.devIdno)">
+						<i class="fa fa-car fa-fw" aria-hidden="true"></i>Track</button></div>
+						<div class="btns-link"><button class="btn" ng-disabled="ifRecord()" ng-click="playRecord(vehiData.devStatus.devIdno)" title="{{recTitle()}}">
+						<i class="fa fa-video-camera fa-fw" aria-hidden="true"></i>Record</button></div>
+						<div class="btns-link"><button class="btn" ng-disabled="ifAlarm(vehiData.devStatus.devIdno)" ng-click="viewAlarmIssue(vehiData.devStatus.devIdno)" title="{{notiTitle()}}">
+						<i class="fa fa-bell fa-fw" aria-hidden="true"></i>Notifications</button></div>
+					</div>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+	</div>
+	<div class="row" ng-if="isAllowed == 621">
+		<div class="col-lg-12">
+			<rd-widget>
+				<rd-widget-body>
+					<style type="text/css">
+						.video-container {
+							height: 280px;
+							overflow: hidden;
+							overflow-x: scroll;
+							white-space: nowrap;
+						}
+
+						.video-flash-player {
+							display: inline-block;
+							margin-right: 20px;
+						}
+					</style>
+					<div class="video-container">
+						<video-loading></video-loading>
+					</div>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,93 @@
+<div class="row car-list" ng-controller="statusListCtrl" update-location>
+	<div class="col-lg-12">
+		<rd-widget>
+			<rd-widget-header icon="fa-tasks" title="Vehicle Lists">
+				<button class= "back-button" ng-click="goBack()">Back</button>
+				<table-export></table-export>
+			</rd-widget-header>
+			<multi-inputs></multi-inputs>
+			<rd-widget-body>
+				<style type="text/css">
+					.table-row-fa {
+						text-align: center;
+					}
+				</style>
+				<div class="table-responsive">
+					<table class="table table-condensed table-hover" id="export-table">
+						<thead>
+							<tr>
+								<th>&#35;</th>
+								<th class="sortable" ng-click="singleSort('onlineStatus')">Status<span class="caret-blank" ng-class="{'caret-down':sortDescend('onlineStatus'), 'caret-up':sortAscend('onlineStatus')}">
+							</span></th>
+								<th class="sortable" ng-click="singleSort('devInfo.userAccount.name')">
+									Device
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('devInfo.userAccount.name'), 'caret-up':sortAscend('devInfo.userAccount.name')}">
+							</span>
+								</th>
+								<th class="sortable" ng-click="singleSort('devStatus.gpsTime')">
+									Last Report Time
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('devStatus.gpsTime'), 'caret-up':sortAscend('devStatus.gpsTime')}">
+							</span></th>
+								<th class="sortable" ng-click="doubleSort('devStatus.weiDuEx', 'devStatus.jingDuEx')" uib-tooltip="{{ sortTooltip('Latitude','Longitude') }}" tooltip-append-to-body="true">
+									Location
+									<span class="caret-blank" ng-class="{'caret-down':sortDescend('devStatus.weiDuEx', 'devStatus.jingDuEx'), 'caret-up':sortAscend('devStatus.weiDuEx', 'devStatus.jingDuEx')}">
+							</span></th>
+								<th class="sortable" ng-click="singleSort('devStatus.speed')">Speed<span class="caret-blank" ng-class="{'caret-down':sortDescend('devStatus.speed'), 'caret-up':sortAscend('devStatus.speed')}">
+							</span></th>
+								<th class="sortable" ng-click="singleSort('devStatus.liCheng')">Mileage<span class="caret-blank" ng-class="{'caret-down':sortDescend('devStatus.liCheng'), 'caret-up':sortAscend('devStatus.liCheng')}">
+							</span></th>
+								<!--<th class="sortable" ng-click="singleSort('Status1')">Alarm<span class="caret-blank"
+								ng-class="{'caret-down':sortDescend('Status1'), 'caret-up':sortAscend('Status1')}">
+							</span></th>-->
+								<th class="sortable" ng-click="singleSort('acc')">Ignition<span class="caret-blank" ng-class="{'caret-down':sortDescend('acc'), 'caret-up':sortAscend('acc')}">
+							</span></th>
+								<th class="sortable" ng-click="singleSort('network')">3G/4G<span class="caret-blank" ng-class="{'caret-down':sortDescend('network'), 'caret-up':sortAscend('network')}">
+							</span></th>
+								<th class="sortable" ng-click="singleSort('hardwareInfo')">Other Info<span class="caret-blank" ng-class="{'caret-down':sortDescend('hardwareInfo'), 'caret-up':sortAscend('hardwareInfo')}">
+							</span></th>
+								<th class="sortable option">Options<span class="caret-blank">
+							</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="v in vehicles | orderBy:[filterSort, sortType, secondSortType, thirdSortType] | emptyToEnd:'devStatus.online' " ng-show="(filterSort(v) == 1) && ($index >= firstIndex) && ($index < lastIndex)" ng-class="getWarn(v.hardwareStatus)">
+								<td class="table-row-index">{{ $index + 1 }}</td>
+								<td class="table-row-fa"><span class="fa" aria-hidden="true" ng-class="getFleetClass(v.onlineStatus)"></span></td>
+								<td>{{v.devInfo.userAccount.name}}</td>
+								<td>{{v.devStatus.gpsTime | date:"dd/MM/yyyy 'at' HH:mm:ss"}}</td>
+								<td>{{v.location}}</td>
+								<td>{{v.isPark}}</td>
+								<td>{{v.devStatus.liCheng}}</td>
+								<!--<td>{{}}</td>-->
+								<td>{{v.acc}}</td>
+								<td>{{v.network}}</td>
+								<td>{{v.hardwareInfo}}</td>
+								<td class="option">
+									<div class="btn-group" uib-dropdown is-open="false">
+										<button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+							        <span class="fa fa-ellipsis-h" style="color: #333"></span>
+							    </button>
+										<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+											<li role="menuitem" ng-click="showVehicle(v.devInfo.idno)">
+												<a href="javascript:void(0)"><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>&nbsp; Show</a>
+											</li>
+											<li role="menuitem" ng-click="trackVehicle(v.devInfo.idno)">
+												<a href="javascript:void(0)"><i class="fa fa-car fa-fw" aria-hidden="true"></i>&nbsp; Track</a>
+											</li>
+											<li role="menuitem" ng-click="playVehicle(v.devInfo.idno)">
+												<a href="javascript:void(0)"><i class="fa fa-play fa-fw" aria-hidden="true"></i>&nbsp; Play</li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</rd-widget-body>
+			<rd-widget-footer>
+				<ul uib-pagination total-items="(vehicles | filter:data.filterTable).length" ng-model="data.currentPage" ng-change="updatePageIndexes()" max-size="data.maxPaginationSize" items-per-page="data.itemsPerPage" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+				</ul>
+			</rd-widget-footer>
+		</rd-widget>
+	</div>
+</div>

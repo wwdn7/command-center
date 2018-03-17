@@ -1,0 +1,23 @@
+<div id="mul-filter-container">
+	<div class="filter-box-wrapper">
+		<strong style="float: left; padding-top: 1.5em;">Keywords:</strong>
+		<div class="">
+			<div repeat-keyword-animation class="filter-box filter-ready-to-use" ng-class="isUsed($index)" ng-click="enableKeyword($index, word)" ng-repeat="word in readyKeywords track by $index">
+				{{word}}
+			</div>
+		</div>
+		<div class="filter-box-container">
+			<div class="filter-box filter-box-item" ng-repeat="word in filterArray track by word.value">
+				{{word.value}}
+				<span class="toast-close-button" ng-click="removeKeyword($index)">x</span>
+			</div>
+		</div>
+	</div>
+	<div class="filter-input-wrapper">
+		<input placeholder="Enter keyword then submit" class="form-control" ng-model="multiKeyword" ng-keypress="keySubmit($event.keyCode)" />
+		<input type="button" class="btn" value="Submit" ng-click="submit($event)">
+		<a class="filter-box-item clear-all-keywords" ng-click="clearAll()">
+			[Clear All]
+		</a>
+	</div>
+</div>

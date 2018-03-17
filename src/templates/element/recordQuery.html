@@ -1,0 +1,46 @@
+<div>
+	<style type="text/css">
+		.btn-link {
+			color: #FFF !important;
+		}
+		.record-query-component {
+			margin-bottom: 15px;
+		}
+		#record-result {
+			height: 391px;
+		}
+		.record-query-to {
+			text-align: center;
+			vertical-align: middle;
+			line-height: 7;
+		}
+	</style>
+	<div class="record-query-component">
+		<h4>Select vehicle</h4>
+		<input type="text" ng-model="device" placeholder="Enter vehicle name/id" uib-typeahead="vehicle as vehicle.name for vehicle in vehiclelist | filter:$viewValue | limitTo:10" class="form-control" typeahead-show-hint="true" typeahead-min-length="0" typeahead-no-results="noResults" style="width: 80%;">
+		<div ng-show="noResults">
+			<i class="fa fa-times"></i> No Results Found
+		</div>
+	</div>
+	<div class="record-query-component">
+		<h4>Select Date</h4>
+        <p class="input-group" style="width: 80%;">
+          <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-click="open1()" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+	</div>
+	<div class="record-query-component row">
+        <h4>Select Time</h4>
+        <div class="col-md-6">
+        	<div uib-timepicker ng-model="beginTime" hour-step="hstep" minute-step="mstep" second-step="sstep" show-seconds="true" show-meridian="ismeridian"></div>
+        </div>
+		<div class="col-md-6">
+      	  <div uib-timepicker ng-model="endTime" hour-step="hstep" minute-step="mstep" second-step="sstep" show-seconds="true" show-meridian="ismeridian"></div>
+		</div>
+	</div>
+	<div class="query-result">
+		<button class="btn btn-primary" ng-click="queries()" style="position: relative; font-size: large">Search</button>
+	</div>
+</div>
